@@ -25,11 +25,11 @@ A couple of notes:
 
   5) This version requires a custom startup script for a few reasons:
 
-      In Compose, even when you have dependencies, there isn't a way to make sure that the database is up before starting the app.  Per these docs (https://docs.docker.com/compose/startup-order/), I added a step in the startup script that checks the database server availability before starting the application.  This does require a dependency on psql being installed, but could be ported to python.
+    In Compose, even when you have dependencies, there isn't a way to make sure that the database is up before starting the app.  Per these docs (https://docs.docker.com/compose/startup-order/), I added a step in the startup script that checks the database server availability before starting the application.  This does require a dependency on psql being installed, but could be ported to python.
 
-     I run the "create_db" command before starting the app as well.  Its not needed after the initial build, but it is non-destructive, runs quickly and verifies the tables are there as expected.
+    I run the "create_db" command before starting the app as well.  Its not needed after the initial build, but it is non-destructive, runs quickly and verifies the tables are there as expected.
 
-     I modified the app to bind to "0.0.0.0" so the app is available outside of the docker network.
+    I modified the app to bind to "0.0.0.0" so the app is available outside of the docker network.
 
   6) I think you could optimize the app container to run from a python image rather than an Ubuntu image.  This would require refactoring the Subrosa install script, the custom startup script that checks for Postgres availability, and so on.  If this was more than a test app, I would probably go through that effort to see if you could slim the images down.
   

@@ -17,7 +17,7 @@ A couple of notes:
 
   1) This has only been tested on OSX El Capitan and macOS Sierra on Docker 1.12.1
 
-  2) It uses the ubuntu:16.04 and postgres:9.5.4 images from Docker Hub.  I would extend those images to create custom images to speed start up but I wanted to "show my work", so to speak.  This does increase the initial startup time to about 5 minutes as it build new images but subseqent startups are quick.
+  2) It uses the ubuntu:16.04 and postgres:9.5.4 images from Docker Hub.  I would extend those images to create custom images to speed start up but I wanted to "show my work", so to speak.  This does increase the initial startup time to about 5 minutes as it builds new images but subseqent startups are quick.
   
   3) I clone the Subrosa source from git into the container during the build.  If I were creating custom images based on core, I would clone the repo locally and copy the files over to the docker images as a part of the build. That would give me control over the version of the application code that gets pushed into the image as opposed to introducing bugs by always working on master.
 
@@ -25,11 +25,11 @@ A couple of notes:
 
   5) This version requires a custom startup script for a few reasons:
 
-       - In Compose, even when you have dependencies, there isn't a way to make sure that the database is up before starting the app.  Per these docs (https://docs.docker.com/compose/startup-order/), I added a step in the startup script that checks the database server availability before starting the application.  This does require a dependency on psql being installed, but could be ported to python.
+    - In Compose, even when you have dependencies, there isn't a way to make sure that the database is up before starting the app.  Per these docs (https://docs.docker.com/compose/startup-order/), I added a step in the startup script that checks the database server availability before starting the application.  This does require a dependency on psql being installed, but could be ported to python.
 
-       - I run the "create_db" command before starting the app as well.  Its not needed after the initial build, but it is non-destructive, runs quickly and verifies the tables are there as expected.
+    - I run the "create_db" command before starting the app as well.  Its not needed after the initial build, but it is non-destructive, runs quickly and verifies the tables are there as expected.
 
-      - I modified the app to bind to "0.0.0.0" so the app is available outside of the docker network.
+    - I modified the app to bind to "0.0.0.0" so the app is available outside of the docker network.
 
-  6) It seems that you could optimize the app container to run from a python image rather than an Ubuntu image.  This would require refactoring the Subrosa install script, the custom startup script that checks for Postgres availability, and so on.  If this was more than a test app, I would probably go through that effort to see if you could slim the images down.
+  6) I think you could optimize the app container to run from a python image rather than an Ubuntu image.  This would require refactoring the Subrosa install script, the custom startup script that checks for Postgres availability, and so on.  If this was more than a test app, I would probably go through that effort to see if you could slim the images down.
   

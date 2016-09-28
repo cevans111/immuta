@@ -1,0 +1,17 @@
+version: '2'
+services:
+  db:
+    build: 
+      context: .
+      dockerfile: Dockerfile-postgres
+  service:
+    build:
+      context: .
+      dockerfile: Dockerfile-ubuntu
+    command: "/opt/subrosa/startup_docker.sh"
+    environment:
+      DATABASE_URL: "postgres://postgres:postgres@db:5432/subrosa"
+    ports:
+      - "80:8000"
+    depends_on:
+      - db

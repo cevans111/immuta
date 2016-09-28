@@ -25,6 +25,7 @@ A couple of notes:
   4) Subrosa prefers a local database but the requirements are to connect to a separate db instance. If you dig into the docs, you will find details about installing into a Heroku instance with a remote database.  If you look into the code, you can see that it accepts a DATABASE_URL environment variable to describe your database connection
 
   5) This version requires a custom startup script for a few reasons:
+  
         1)  In Compose, even when you have dependencies, there isn't a way to make sure that the database is up before starting the app.  Per these docs, I added a step in the startup script that checks the database server availability before starting the application.  This does require a dependency on psql being installed, but could be ported to python.
 
         2) I run the "create_db" command before starting the app as well.  Its not needed after the initial build, but it runs quickly and verifies the tables are there as expected.
